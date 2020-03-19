@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Login extends Component {
     constructor() {
@@ -11,7 +12,23 @@ class Login extends Component {
     }
     handleForm = e => {
         e.preventDefault();
-        this.props.history.push('/profile');
+        const data = {
+            email: this.state.email,
+            password: this.state.password
+        }
+        // fetch('http://localhost:8000/api/auth/login', {
+        //     method: 'post',
+        //     body: JSON.stringify(data),
+        //     headers: {
+        //         'Content-type': 'application/json'
+        //     }
+        // });
+        axios.post('http://localhost:8000/api/auth/login', data)
+            .then(res => console.log(res))
+            .catch(e => this.setState({
+                errors: e.response.data
+            }));
+        // this.props.history.push('/profile');
     }
     
     handleInput = e => {
@@ -21,6 +38,7 @@ class Login extends Component {
         });
     }
     render() { 
+        let error = this.state.errors.error;
         return (
             <div className="flex">
                 <div className="w-1/3"></div>
@@ -28,6 +46,7 @@ class Login extends Component {
                     <form className="border border-gray-400" onSubmit={this.handleForm}>
                         <div className="p-4">
                             <h1 className="text-lg border-b border-gray-300">Login</h1>
+                            {error ? (<p className="text-red-400 text-sm">{error}</p>) : ("")}
                             <div className="mt-4">
                                 <label>Email</label>
                                 <input type="email" name="email" 
