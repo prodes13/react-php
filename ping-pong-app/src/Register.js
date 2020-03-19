@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import cookie from 'js-cookie';
 
 class Register extends Component {
     constructor() {
@@ -22,7 +23,11 @@ class Register extends Component {
         }
 
         axios.post('http://localhost:8000/api/auth/register', data)
-            .then(res => console.log(res))
+            .then(res => {
+                cookie.set('token', res.data.access_token);
+                cookie.set('user', res.data.user);
+                this.props.history.push('/profile');
+            })
             .catch(e => this.setState({
                 errors: e.response.data
             }));

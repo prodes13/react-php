@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import './css/tailwind.css';
 import Login from './Login';
 import Register from './Register';
+import Profile from './Profile';
+import GuestRoute from './components/GuestRoute';
 
 class App extends Component {
 
@@ -10,8 +12,9 @@ class App extends Component {
     return (
       <Router>
         <div className="bg-gray-300 h-screen">
-          <Route path='/login' component={Login} />
-          <Route path='/register' component={Register} />
+          <GuestRoute path='/login' component={Login} />
+          <GuestRoute path='/register' component={Register} />
+          <Route path='/profile' component={Profile} />
         </div>
       </Router>
     );
