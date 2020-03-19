@@ -17,6 +17,20 @@ class Listing extends Component {
                 });
             })
     }
+    onDelete(category_id) {
+        axios.delete('http://127.0.0.1:8000/category/delete/' + category_id)
+            .then(response => {
+                var categories = this.state.categories;
+                for(var i = 0; i < categories.length; i++) {
+                    if (category_id == categories[i]) {
+                        categories.splice(i, 1);
+                        this.setState({
+                            categories
+                        });
+                    }
+                }
+            });
+    }
 
     render() {
         return (
@@ -28,6 +42,7 @@ class Listing extends Component {
                 <th scope="col">Status</th>
                 <th scope="col">Created at</th>
                 <th scope="col">Updated at</th>
+                <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,7 +56,7 @@ class Listing extends Component {
                             <td>{category.active == 1 ? "Active" : "Inactive"}</td>
                             <td>{category.created_at}</td>
                             <td>{category.updated_at}</td>
-                            
+                            <td><a href="#" onClick={this.onDelete.bind(this, category.id)}>Delete</a></td>
                         </tr>
                         )
                     })
