@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import cookie from 'js-cookie';
+import { connect } from 'react-redux';
 
 class Login extends Component {
     constructor() {
@@ -17,23 +18,16 @@ class Login extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        // fetch('http://localhost:8000/api/auth/login', {
-        //     method: 'post',
-        //     body: JSON.stringify(data),
-        //     headers: {
-        //         'Content-type': 'application/json'
-        //     }
-        // });
+        
         axios.post('http://localhost:8000/api/auth/login', data)
             .then(res => {
                 cookie.set('token', res.data.access_token);
-                cookie.set('user', res.data.user);
+                this.props.setLogin(res.data.user);
                 this.props.history.push('/profile');
             })
             .catch(e => this.setState({
                 errors: e.response.data
             }));
-        // this.props.history.push('/profile');
     }
     
     handleInput = e => {
@@ -83,5 +77,11 @@ class Login extends Component {
         );
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setLogin: user => dispatch({type: "SET_LOGIN", payload: user })
+    }
+}
  
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);
