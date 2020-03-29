@@ -1,13 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import cookie from 'js-cookie';
 
 function Layout(props) {
+
+    const handleLogout = e => {
+        e.preventDefault();
+        cookie.remove("token");
+        props.logout();
+    }
+
     return (
         <div>
-            <nav className="flex">
-                <h1 className="w-3/4 py-4 mx-10">PingPong Authentication</h1>
-                <div className="w-1/4 justify-end">
+            <nav className="flex justify-between">
+                <h1 className="py-4 mx-10">PingPong Authentication</h1>
+                <div className="flex justify-between">
                     { 
                         !props.loggedIn ? <>
                             <Link className="m-3 py-1 px-2 bg-purple-700 text-white rounded inline-block"
@@ -21,6 +29,7 @@ function Layout(props) {
                         </> 
                         : 
                         <Link className="m-3 py-1 px-2 bg-purple-700 text-white rounded inline-block"
+                            onClick={handleLogout}
                             to="/logout">
                             Logout
                         </Link> 
@@ -38,4 +47,10 @@ const mapStateToProps = state => {
     }
 } 
 
-export default connect(mapStateToProps)(Layout)
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: () => dispatch({ type: 'SET_LOGOUT'})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout)

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response; 
 
 class AuthController extends Controller
 {
@@ -60,6 +62,19 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
+
+   public function update(Request $request)
+   {
+       auth()->user()->update($request->all());
+       return response('Updated!!!', Response::HTTP_ACCEPTED);
+   }
+
+   /**
+    * Log the user out (Invalidate the token).
+    *
+    * @return \Illuminate\Http\JsonResponse
+    */
     public function logout()
     {
         auth()->logout();

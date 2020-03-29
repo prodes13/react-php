@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './css/tailwind.css';
 import Login from './Login';
 import Register from './Register';
